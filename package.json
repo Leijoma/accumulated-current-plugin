@@ -1,0 +1,15 @@
+{
+  "name": "accumulated-current-plugin",
+  "version": "1.0.0",
+  "description": "A plugin to accumulate current consumption on a daily basis",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "signalk-node-server-plugin",
+    "signalk-category-utility"
+  ],
+  "author": "Magnus Leijonborg",
+  "license": "ISC"
+}

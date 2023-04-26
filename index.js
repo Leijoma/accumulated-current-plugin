@@ -8,6 +8,9 @@ module.exports = function (app) {
     var unsubscribes = [];
     var consumedToday=0;
     var consumedYesterday=0;
+    var solarYieldToday=0;
+    var chargerYieldToday=0;
+    
     var maxCurrentToday=0;
     var maxCurrent=0;
     var lastTimeHouse=0;
@@ -77,6 +80,8 @@ module.exports = function (app) {
                         consumedYesterday=consumedToday
                         consumedToday=0;
                         maxCurrentToday=0;
+                        chargerYieldToday=0;
+                        solarYieldToday=0;
                         yesterday=day
                     }   
                     if (lastTimeHouse==0) {
@@ -100,6 +105,70 @@ module.exports = function (app) {
                         
                         app.debug("consumedToday As: ",consumedToday);
                         app.handleMessage('accumulated-current-plugin', {
+                         updates :[ 
+                            {
+                            "meta": [
+                                {
+                                "path": "electrical.batteries.consumedToday",
+                                "value": {
+                                    "description": "Net aH form House shunt",
+                                    "units": "Ah",
+                                    "displayName": "Consumed Ah today",
+                                    "timeout": 30
+                                    },
+                                },
+                                {
+                                    "path": "electrical.batteries.consumedYesterday",
+                                    "value": {
+                                        "description": "Net aH form House shunt",
+                                        "units": "Ah",
+                                        "displayName": "Consumed Ah yesterday",
+                                        "timeout": 30
+                                    },
+                                },
+                                {
+                                    "path": "electrical.batteries.maxCurrent",
+                                    "value": {
+                                        "description": "Max current from House shunt",
+                                        "units": "A",
+                                        "displayName": "Max currrent",
+                                        "timeout": 30
+                                    },
+                                },
+                                {
+                                    "path": "electrical.batteries.maxCurrentToday",
+                                    "value": {
+                                        "description": "Max current from House shunt today",
+                                        "units": "A",
+                                        "displayName": "Max currrent today",
+                                        "timeout": 30
+                                    },
+                                },
+                                {
+                                    "path": "electrical.batteries.solarYieldToday",
+                                    "value": {
+                                        "description": "Total energy from charger today",
+                                        "units": "Ah",
+                                        "displayName": "Energy from charger today",
+                                        "timeout": 30
+                                    },
+                                },
+                                {
+                                    "path": "electrical.batteries.chargerYieldToday",
+                                    "value": {
+                                        "description": "Total energy from solar charger today",
+                                        "units": "Ah",
+                                        "displayName": "Energy from solar charger today",
+                                        "timeout": 30
+                                    },
+                                }
+                            ]
+                            }
+                        ]
+                        });
+
+
+                        app.handleMessage('accumulated-current-plugin', {
                             updates: [
                               {
                                 values: [
@@ -116,13 +185,27 @@ module.exports = function (app) {
                                   {
                                     path: 'electrical.batteries.maxCurrent',
                                     value: maxCurrent,
-                                    units: 'A'
+                                    meta: {
+                                       'units' : 'A',
+                                       'description': "max current measured since server start" 
+                                    }
                                   },
                                   {
                                     path: 'electrical.batteries.maxCurrentToday',
                                     value: maxCurrentToday,
                                     units: 'A'
-                                  }
+                                  },
+                                  {
+                                    path: 'electrical.batteries.solarYieldToday',
+                                    value: solarYieldToday,
+                                    units: 'Ah'
+                                  },
+                                  {
+                                    path: 'electrical.batteries.chargerYieldToday',
+                                    value: chargerYieldToday,
+                                    units: 'Ah'
+                                  },
+
                                 ]
                               } 
                           ]
@@ -141,14 +224,31 @@ module.exports = function (app) {
                     app.debug("found solar current path");
                     let mss= Date.parse(u.timestamp)
                     if (lastTimeSolar==0) {
-                        lastTimeHouse=mss; 
+                        lastTimeSolar=mss; 
                     }
                     else {
                     
                         let deltaMss=mss-lastTimeSolar
                         lastTimeSolar=mss;
                         consumedToday=consumedToday+(u.values[0].value*deltaMss)/1000/3600
-                       
+                        solarYieldToday=solarYieldToday+(u.values[0].value*deltaMss)/1000/3600
+                      
+                        
+                    }
+                }
+                if (u.values[0].path==options.charger_current) {
+                    app.debug("found charger current path");
+                    let msss= Date.parse(u.timestamp)
+                    if (lastTimeCharger==0) {
+                        lastTimeCharger=msss; 
+                    }
+                    else {
+                    
+                        let deltaMsss=msss-lastTimeCharger
+                        lastTimeCharger=msss;
+                        consumedToday=consumedToday+(u.values[0].value*deltaMsss)/1000/3600
+                        chargerYieldToday=chargerYieldToday+(u.values[0].value*deltaMsss)/1000/3600
+                      
                         
                     }
                 }

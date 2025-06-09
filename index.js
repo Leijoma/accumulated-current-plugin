@@ -147,18 +147,18 @@ module.exports = function (app) {
                                 {
                                     "path": "electrical.batteries.solarYieldToday",
                                     "value": {
-                                        "description": "Total energy from charger today",
+                                        "description": "Total energy from solar charger today",
                                         "units": "Ah",
-                                        "displayName": "Energy from charger today",
+                                        "displayName": "Energy from solar charger today",
                                         "timeout": 30
                                     },
                                 },
                                 {
                                     "path": "electrical.batteries.chargerYieldToday",
                                     "value": {
-                                        "description": "Total energy from solar charger today",
+                                        "description": "Total energy from charger today",
                                         "units": "Ah",
-                                        "displayName": "Energy from solar charger today",
+                                        "displayName": "Energy from charger today",
                                         "timeout": 30
                                     },
                                 }

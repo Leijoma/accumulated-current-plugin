@@ -55,7 +55,7 @@ module.exports = function (app) {
         context: '*', // Get data for all contexts
         subscribe: [{
           path: 'electrical.*', // Get all paths
-          period: 1000 // Every 5000ms
+          period: 1000 // Every 1000ms
         }]
       };
     

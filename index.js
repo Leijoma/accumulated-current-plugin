@@ -131,7 +131,7 @@ module.exports = function (app) {
                                     "value": {
                                         "description": "Max current from House shunt",
                                         "units": "A",
-                                        "displayName": "Max currrent",
+                                        "displayName": "Max current",
                                         "timeout": 30
                                     },
                                 },
@@ -140,7 +140,7 @@ module.exports = function (app) {
                                     "value": {
                                         "description": "Max current from House shunt today",
                                         "units": "A",
-                                        "displayName": "Max currrent today",
+                                        "displayName": "Max current today",
                                         "timeout": 30
                                     },
                                 },

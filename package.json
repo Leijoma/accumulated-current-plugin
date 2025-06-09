@@ -4,12 +4,15 @@
   "description": "A plugin to accumulate current consumption on a daily basis",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [
     "signalk-node-server-plugin",
     "signalk-category-utility"
   ],
   "author": "Magnus Leijonborg",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.6.2"
+  }
 }
